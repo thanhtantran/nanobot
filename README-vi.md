@@ -1,26 +1,16 @@
-::: {align="center"}
-`<img src="nanobot_logo.png" alt="nanobot" width="500">`{=html}
-```{=html}
-<h1>
-```
-nanobot: Trợ lý AI cá nhân siêu nhẹ
-```{=html}
-</h1>
-```
-```{=html}
-<p>
-```
-`<a href="https://pypi.org/project/nanobot-ai/">`{=html}`<img src="https://img.shields.io/pypi/v/nanobot-ai" alt="PyPI">`{=html}`</a>`{=html}
-`<a href="https://pepy.tech/project/nanobot-ai">`{=html}`<img src="https://static.pepy.tech/badge/nanobot-ai" alt="Downloads">`{=html}`</a>`{=html}
-`<img src="https://img.shields.io/badge/python-≥3.11-blue" alt="Python">`{=html}
-`<img src="https://img.shields.io/badge/license-MIT-green" alt="License">`{=html}
-`<a href="./COMMUNICATION.md">`{=html}`<img src="https://img.shields.io/badge/Feishu-Group-E9DBFC?style=flat&logo=feishu&logoColor=white" alt="Feishu">`{=html}`</a>`{=html}
-`<a href="./COMMUNICATION.md">`{=html}`<img src="https://img.shields.io/badge/WeChat-Group-C5EAB4?style=flat&logo=wechat&logoColor=white" alt="WeChat">`{=html}`</a>`{=html}
-`<a href="https://discord.gg/MnCvHqpUGB">`{=html}`<img src="https://img.shields.io/badge/Discord-Community-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord">`{=html}`</a>`{=html}
-```{=html}
-</p>
-```
-:::
+<div align="center">
+  <img src="nanobot_logo.png" alt="nanobot" width="500">
+  <h1>nanobot: Ultra-Lightweight Personal AI Assistant</h1>
+  <p>
+    <a href="https://pypi.org/project/nanobot-ai/"><img src="https://img.shields.io/pypi/v/nanobot-ai" alt="PyPI"></a>
+    <a href="https://pepy.tech/project/nanobot-ai"><img src="https://static.pepy.tech/badge/nanobot-ai" alt="Downloads"></a>
+    <img src="https://img.shields.io/badge/python-≥3.11-blue" alt="Python">
+    <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+    <a href="./COMMUNICATION.md"><img src="https://img.shields.io/badge/Feishu-Group-E9DBFC?style=flat&logo=feishu&logoColor=white" alt="Feishu"></a>
+    <a href="./COMMUNICATION.md"><img src="https://img.shields.io/badge/WeChat-Group-C5EAB4?style=flat&logo=wechat&logoColor=white" alt="WeChat"></a>
+    <a href="https://discord.gg/MnCvHqpUGB"><img src="https://img.shields.io/badge/Discord-Community-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord"></a>
+  </p>
+</div>
 
 🐈 **nanobot** là một trợ lý AI cá nhân **siêu nhẹ** được lấy cảm hứng
 từ [OpenClaw](https://github.com/openclaw/openclaw)
