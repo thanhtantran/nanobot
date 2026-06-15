@@ -73,6 +73,7 @@
       "models": "Mô hình",
       "providers": "Nhà cung cấp",
       "image": "Hình ảnh",
+      "voice": "Giọng nói",
       "browser": "Trang web",
       "runtime": "Hệ thống",
       "advanced": "Bảo mật",
@@ -85,6 +86,7 @@
       "interface": "Giao diện",
       "ai": "AI",
       "system": "Hệ thống",
+      "about": "Giới thiệu",
       "status": "Trạng thái",
       "localPreferences": "Tùy chọn cục bộ",
       "presets": "Preset",
@@ -99,7 +101,8 @@
       "mcp": "Dịch vụ MCP",
       "apps": "Ứng dụng",
       "nativeHost": "Host gốc",
-      "hostSafety": "An toàn ứng dụng"
+      "hostSafety": "An toàn ứng dụng",
+      "voiceInput": "Nhap giong noi"
     },
     "rows": {
       "theme": "Chủ đề",
@@ -142,7 +145,13 @@
       "engine": "Bộ máy",
       "logs": "Nhật ký",
       "diagnostics": "Chẩn đoán",
-      "contextWindow": "Cửa sổ ngữ cảnh"
+      "contextWindow": "Cửa sổ ngữ cảnh",
+      "transcription": "Phien am",
+      "transcriptionProvider": "Nha cung cap",
+      "transcriptionProviderStatus": "Trang thai nha cung cap",
+      "transcriptionModel": "Mo hinh",
+      "transcriptionLanguage": "Ngon ngu",
+      "voiceLimits": "Gioi han"
     },
     "help": {
       "theme": "Chuyển giữa giao diện sáng và tối.",
@@ -181,7 +190,12 @@
       "diagnostics": "Exporta un pequeño informe de runtime para soporte.",
       "localServiceAccessNative": "Permite que comandos shell con Full Access alcancen servicios en este Mac.",
       "webuiDefaultAccessNative": "Usado por chats nativos sin permiso específico de proyecto.",
-      "contextWindow": "Chọn ngân sách ngữ cảnh mặc định cho cấu hình mô hình này."
+      "contextWindow": "Chọn ngân sách ngữ cảnh mặc định cho cấu hình mô hình này.",
+      "transcription": "Phien am dau vao micro truoc khi gui. Tin nhan giong noi tu kenh chat dung cung cai dat.",
+      "transcriptionProvider": "Dung thong tin xac thuc cua nha cung cap tu Providers.",
+      "transcriptionProviderStatus": "API key nam trong providers, khong nam trong cai dat transcription.",
+      "transcriptionModel": "Giu mac dinh da resolve tru khi nha cung cap can id model tuy chinh.",
+      "transcriptionLanguage": "Goi y ISO-639 tuy chon, nhu en, zh, ja hoac ko."
     },
     "values": {
       "light": "Sáng",
@@ -283,6 +297,7 @@
       "totalProviders": "{{count}} khả dụng",
       "webSearch": "Tìm kiếm web",
       "imageGeneration": "Tạo hình ảnh",
+      "voiceInput": "Nhập bằng giọng nói",
       "workspace": "Không gian làm việc"
     },
     "usage": {
@@ -376,6 +391,13 @@
       "install": "Cài CLI",
       "unavailable": "Không khả dụng",
       "noDescription": "Không có mô tả."
+    },
+    "about": {
+      "version": "Phiên bản",
+      "checking": "Đang kiểm tra...",
+      "checkForUpdates": "Kiểm tra bản cập nhật",
+      "upToDate": "Bạn đang dùng phiên bản mới nhất",
+      "updateAvailable": "Có bản cập nhật v{{version}}"
     },
     "mcp": {
       "allCategories": "Tất cả danh mục",
@@ -486,10 +508,16 @@
       "rawInstructions": "SKILL.md gốc",
       "rawInstructionsEmpty": "Không có hướng dẫn gốc.",
       "detailDescription": "Chi tiết cho {{name}}."
+    },
+    "voice": {
+      "selectProvider": "Chon nha cung cap",
+      "configureProvider": "Cau hinh nha cung cap",
+      "languageAuto": "Tu dong"
     }
   },
   "chat": {
     "fallbackTitle": "Trò chuyện {{id}}",
+    "forkTitle": "Nhánh: {{title}}",
     "loading": "Đang tải…",
     "noSessions": "Chưa có phiên nào.",
     "showMore": "Hiển thị thêm {{count}}",
@@ -531,7 +559,22 @@
     "title": "Xóa cuộc trò chuyện này?",
     "description": "Không thể hoàn tác thao tác này.",
     "cancel": "Hủy",
-    "confirm": "Xóa"
+    "confirm": "Xóa",
+    "automationsDescription": "Cuộc trò chuyện này có các tự động hóa đã lên lịch. Xóa cuộc trò chuyện cũng sẽ xóa chúng.",
+    "moreAutomations": "+ {{count}} mục nữa",
+    "confirmWithAutomations": "Xóa trò chuyện và tự động hóa",
+    "schedule": {
+      "at": "{{time}}",
+      "every": "Mỗi {{duration}}",
+      "cron": "Cron {{expr}}",
+      "cronWithTz": "Cron {{expr}} · {{tz}}",
+      "unknown": "Lịch tùy chỉnh"
+    },
+    "next": {
+      "label": "Tiếp theo: {{time}}",
+      "disabled": "Đã tạm dừng",
+      "none": "Không có lần chạy tiếp theo"
+    }
   },
   "connection": {
     "idle": "Rảnh",
@@ -628,6 +671,7 @@
       },
       "next": {
         "label": "Tiếp theo {{time}}",
+        "pending": "Sắp chạy",
         "disabled": "Đã tạm dừng",
         "none": "Không có lần chạy tiếp theo"
       }
@@ -677,6 +721,21 @@
         "reason": "Suy luận",
         "deepResearch": "Nghiên cứu sâu",
         "voice": "Nhập bằng giọng nói"
+      },
+      "voice": {
+        "hint": "Bấm để đọc chính tả hoặc nhấn giữ",
+        "stop": "Dừng ghi âm",
+        "transcribing": "Đang chép lời...",
+        "recordingStatus": "Đang ghi {{time}}"
+      },
+      "voiceErrors": {
+        "unsupported": "Trình duyệt này không hỗ trợ nhập bằng giọng nói.",
+        "permission": "Cần quyền truy cập micrô.",
+        "notConfigured": "Hãy cấu hình nhà cung cấp chép lời trước.",
+        "tooLong": "Bản ghi âm quá dài.",
+        "tooShort": "Giữ lâu hơn một chút để ghi âm giọng nói.",
+        "noInput": "Không phát hiện đầu vào micrô.",
+        "failed": "Không thể chép lời âm thanh."
       },
       "slash": {
         "ariaLabel": "Lệnh slash",
@@ -776,6 +835,7 @@
     },
     "scrollToBottom": "Cuộn xuống cuối",
     "loadEarlier": "Tải tin nhắn trước đó",
+    "forkedFromHistory": "Tách nhánh từ lịch sử",
     "promptNavigator": {
       "open": "Mở trình điều hướng prompt",
       "title": "Prompt",
@@ -801,8 +861,9 @@
     "agentActivityLiveSummary": "Đang chạy… · {{reasoning}} bước · {{tools}} lần gọi công cụ",
     "agentActivityLiveToolsOnly": "Đang chạy… · {{tools}} lần gọi công cụ",
     "imageAttachment": "Tệp hình ảnh đính kèm",
-    "copyReply": "Sao chép trả lời",
-    "copiedReply": "Đã sao chép trả lời",
+    "forkFromHere": "Tách nhánh",
+    "copyReply": "Sao chép",
+    "copiedReply": "Đã sao chép",
     "turnLatencyTitle": "Thời gian phản hồi (end-to-end)",
     "activityThinkingFor": "Đang suy nghĩ trong {{duration}}",
     "activityThought": "Đã suy nghĩ",
