@@ -154,6 +154,12 @@ def _install_gateway_shutdown_handlers(
     return restore
 
 
+def _advance_dream_cursor_if_behind(memory: Any) -> None:
+    latest = memory.get_latest_cursor()
+    if memory.get_last_dream_cursor() < latest:
+        memory.set_last_dream_cursor(latest)
+
+
 class SafeFileHistory(FileHistory):
     """FileHistory subclass that sanitizes surrogate characters on write.
 
@@ -1165,6 +1171,7 @@ def _run_gateway(
         console.print(f"[green]✓[/green] Dream: {dream_cfg.describe_schedule()}")
     else:
         console.print("[yellow]○[/yellow] Dream: disabled")
+        _advance_dream_cursor_if_behind(agent.context.memory)
 
     # Register Heartbeat system job (idempotent on restart)
     if hb_cfg.enabled:
@@ -1805,14 +1812,23 @@ def _login_openai_codex() -> None:
     try:
         from oauth_cli_kit import get_token, login_oauth_interactive
 
+        from nanobot.config.loader import load_config, resolve_config_env_vars
+
+        proxy = None
+        try:
+            proxy = resolve_config_env_vars(load_config()).providers.openai_codex.proxy or None
+        except ValueError as e:
+            console.print(f"[red]{e}[/red]")
+            raise typer.Exit(1) from e
         token = None
         with suppress(Exception):
-            token = get_token()
+            token = get_token(proxy=proxy)
         if not (token and token.access):
             console.print("[cyan]Starting interactive OAuth login...[/cyan]\n")
             token = login_oauth_interactive(
                 print_fn=lambda s: console.print(s),
                 prompt_fn=lambda s: typer.prompt(s),
+                proxy=proxy,
             )
         if not (token and token.access):
             console.print("[red]✗ Authentication failed[/red]")
