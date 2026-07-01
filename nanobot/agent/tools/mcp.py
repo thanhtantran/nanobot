@@ -166,12 +166,31 @@ async def _probe_http_url(url: str, timeout: float = 3.0) -> bool:
         return False
 
 
+def _redact_url(url: str) -> str:
+    """Strip credentials and query/fragment before logging an MCP URL.
+
+    Server URLs may embed secrets (``https://user:token@host/sse`` or a
+    ``?token=`` query). Some deployments also put opaque tokens in the path, so
+    log only the origin and a path placeholder.
+    """
+    try:
+        parts = urllib.parse.urlsplit(url)
+        hostname = parts.hostname or ""
+        netloc = f"[{hostname}]" if ":" in hostname else hostname
+        if parts.port:
+            netloc = f"{netloc}:{parts.port}"
+        path = "/..." if parts.path and parts.path != "/" else parts.path
+        return urllib.parse.urlunsplit((parts.scheme, netloc, path, "", ""))
+    except Exception:
+        return "<redacted-url>"
+
+
 async def _validate_mcp_request_url(request: httpx.Request) -> None:
     """Validate each outgoing MCP HTTP request, including redirect targets."""
     ok, error = validate_url_target(str(request.url))
     if not ok:
         raise httpx.RequestError(
-            f"Blocked unsafe MCP URL {request.url} ({error})",
+            f"Blocked unsafe MCP URL {_redact_url(str(request.url))} ({error})",
             request=request,
         )
 
@@ -774,7 +793,7 @@ async def connect_mcp_servers(
                     logger.warning(
                         "MCP server '{}': blocked unsafe URL {} ({})",
                         name,
-                        cfg.url,
+                        _redact_url(cfg.url),
                         error,
                     )
                     await server_stack.aclose()
@@ -795,7 +814,7 @@ async def connect_mcp_servers(
                 read, write = await server_stack.enter_async_context(stdio_client(params))
             elif transport_type == "sse":
                 if not await _probe_http_url(cfg.url):
-                    logger.warning("MCP server '{}': {} unreachable, skipping", name, cfg.url)
+                    logger.warning("MCP server '{}': {} unreachable, skipping", name, _redact_url(cfg.url))
                     await server_stack.aclose()
                     return name, None
 
@@ -822,7 +841,7 @@ async def connect_mcp_servers(
                 )
             elif transport_type == "streamableHttp":
                 if not await _probe_http_url(cfg.url):
-                    logger.warning("MCP server '{}': {} unreachable, skipping", name, cfg.url)
+                    logger.warning("MCP server '{}': {} unreachable, skipping", name, _redact_url(cfg.url))
                     await server_stack.aclose()
                     return name, None
 
