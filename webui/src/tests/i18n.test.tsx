@@ -75,6 +75,64 @@ const LOCALIZED_SETTINGS_COPY_KEYS = [
   "settings.apps.description",
   "settings.apps.caption",
   "settings.apps.restartRequired",
+  "settings.skills.views",
+  "settings.skills.installedTab",
+  "settings.skills.discoverTab",
+  "settings.skills.customGroup",
+  "settings.skills.builtinGroup",
+  "settings.skills.otherGroup",
+  "settings.skills.searchInstalled",
+  "settings.skills.filterAll",
+  "settings.skills.filterEnabled",
+  "settings.skills.filterDisabled",
+  "settings.skills.noMatching",
+  "settings.skills.statusDisabled",
+  "settings.skills.statusEnabled",
+  "settings.skills.statusNeedsSetup",
+  "settings.skills.showLess",
+  "settings.skills.showMore",
+  "settings.skills.enabledControl",
+  "settings.skills.enabledDescription",
+  "settings.skills.enableSkill",
+  "settings.skills.disableSkill",
+  "settings.skills.updateFailed",
+  "settings.skills.deleteTitle",
+  "settings.skills.deleteDescription",
+  "settings.skills.deleteAction",
+  "settings.skills.deleteFailed",
+  "settings.skills.deleteConfirmTitle",
+  "settings.skills.deleteConfirmDescription",
+  "settings.skills.deleteConfirmAction",
+  "settings.skills.instructionsTitle",
+  "settings.skills.setupRequired",
+  "settings.skills.setupDescription",
+  "settings.skills.copySetupCommand",
+  "settings.skills.checkAgain",
+  "settings.skills.marketplaceSearchFailed",
+  "settings.skills.marketplaceInstallFailed",
+  "settings.skills.marketplaceSearchPlaceholder",
+  "settings.skills.marketplaceSearchLabel",
+  "settings.skills.marketplaceSearching",
+  "settings.skills.marketplaceProviderFilter",
+  "settings.skills.marketplaceProviderAll",
+  "settings.skills.marketplaceTrendingTitle",
+  "settings.skills.marketplaceTrendingDescription",
+  "settings.skills.marketplaceViewAll",
+  "settings.skills.marketplaceTrendingUnavailable",
+  "settings.skills.marketplaceEmpty",
+  "settings.skills.marketplaceConfirmTitle",
+  "settings.skills.marketplaceConfirmDescription",
+  "settings.skills.marketplaceConfirmInstall",
+  "settings.skills.marketplaceOpen",
+  "settings.skills.marketplaceOpenProvider",
+  "settings.skills.marketplaceInstalls24h",
+  "settings.skills.marketplaceInstalls",
+  "settings.skills.marketplaceNpxRequired",
+  "settings.skills.marketplaceInstalling",
+  "settings.skills.marketplaceInstalled",
+  "settings.skills.marketplaceInstall",
+  "settings.skills.marketplaceNoTrend",
+  "settings.skills.marketplaceTrendLabel",
   "settings.nanobotFeatures.disable",
   "settings.nanobotFeatures.ready",
   "settings.nanobotFeatures.missingDependency",
@@ -135,6 +193,48 @@ const LOCALIZED_WORKSPACE_COPY_KEYS = [
   "workspace.dialog.defaultProject",
   "workspace.dialog.usePath",
   "workspace.dialog.absolutePathRequired",
+];
+const LOCALIZED_CHANNEL_SHELL_KEYS = [
+  "settings.channels.advanced",
+  "settings.channels.checkAndEnable",
+  "settings.channels.checkConnection",
+  "settings.channels.checkedAndEnabled",
+  "settings.channels.checking",
+  "settings.channels.checkOnly",
+  "settings.channels.commandCopied",
+  "settings.channels.commandCopyFailed",
+  "settings.channels.configuredInstances",
+  "settings.channels.connectPreview",
+  "settings.channels.copyCommand",
+  "settings.channels.filterAll",
+  "settings.channels.filterOff",
+  "settings.channels.filterOn",
+  "settings.channels.helperCopied",
+  "settings.channels.helperCopyFailed",
+  "settings.channels.hideSecret",
+  "settings.channels.instanceConfigured",
+  "settings.channels.instanceNeedsSetup",
+  "settings.channels.managedByWebui",
+  "settings.channels.officialGuide",
+  "settings.channels.optional",
+  "settings.channels.providerPreset",
+  "settings.channels.requiredSetup",
+  "settings.channels.savedSecret",
+  "settings.channels.savedSecretPlaceholder",
+  "settings.channels.savedSettings",
+  "settings.channels.saveSettings",
+  "settings.channels.selectChannel",
+  "settings.channels.setupSteps",
+  "settings.channels.showSecret",
+  "settings.channels.toggleChannel",
+  "settings.channels.toggleInstance",
+  "settings.channels.tryIt",
+  "settings.channels.validation.connected",
+  "settings.channels.validation.configured",
+  "settings.channels.validation.invalid",
+  "settings.channels.validation.needs_setup",
+  "settings.channels.validation.unsupported",
+  "settings.channels.validationFailed",
 ];
 const INDEX_HTML = readFileSync(resolve(process.cwd(), "index.html"), "utf8");
 const PREBOOT_SCRIPT = INDEX_HTML.match(
@@ -375,7 +475,11 @@ describe("webui i18n", () => {
     for (const [locale, resource] of Object.entries(resources)) {
       if (locale === "en") continue;
       const current = flattenResource(resource.common);
-      const leaked = [...LOCALIZED_SETTINGS_COPY_KEYS, ...LOCALIZED_WORKSPACE_COPY_KEYS].filter(
+      const leaked = [
+        ...LOCALIZED_SETTINGS_COPY_KEYS,
+        ...LOCALIZED_WORKSPACE_COPY_KEYS,
+        ...LOCALIZED_CHANNEL_SHELL_KEYS,
+      ].filter(
         (key) => current.get(key) === english.get(key),
       );
 
@@ -391,6 +495,12 @@ describe("webui i18n", () => {
     expect(settings.byok.tabs.webSearch).toBe("网页搜索");
     expect(settings.overview.webSearch).toBe("网页搜索");
     expect(settings.overview.workspace).toBe("工作区");
+    expect(settings.skills.installedTab).toBe("已安装");
+    expect(settings.skills.discoverTab).toBe("发现");
+    expect(settings.skills.marketplaceProviderFilter).toBe("技能来源");
+    expect(settings.skills.marketplaceProviderAll).toBe("全部");
+    expect(settings.skills.marketplaceSearchPlaceholder).toBe("搜索技能");
+    expect(settings.skills.marketplaceTrendingTitle).toBe("各市场热门技能");
   });
 
   it("keeps Brazilian Portuguese settings overview copy localized", () => {
@@ -399,7 +509,7 @@ describe("webui i18n", () => {
     const chat = resources["pt-BR"].common.chat;
 
     expect(sidebar.settings).toBe("Configurações");
-    expect(chat.newChat).toBe("Nova conversa");
+    expect(chat.newChat).toBe("Novo tópico");
     expect(settings.nav.browser).toBe("Web");
     expect(settings.sections.webSearch).toBe("Busca na web");
     expect(settings.byok.tabs.webSearch).toBe("Busca na web");

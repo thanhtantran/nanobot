@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from nanobot.utils.gitstore import GitStore
+from nanobot.utils.gitstore import GitStore, GitStoreError
 
 
 @pytest.fixture
@@ -63,11 +63,13 @@ class TestLineAges:
         assert len(ages) == 2
         assert all(a.age_days == 30 for a in ages)
 
-    def test_annotate_failure_returns_empty(self, tmp_path):
-        """If annotate fails, line_ages should return [] gracefully."""
-        git = GitStore(tmp_path, tracked_files=["MEMORY.md"])
-        # Don't init — annotate will fail
-        assert git.line_ages("MEMORY.md") == []
+    def test_annotate_failure_is_explicit(self, git, tmp_path):
+        (tmp_path / "MEMORY.md").write_text("important\n", encoding="utf-8")
+        git.auto_commit("initial")
+
+        with patch("dulwich.porcelain.annotate", side_effect=OSError("broken repo")):
+            with pytest.raises(GitStoreError, match="annotation failed"):
+                git.line_ages("MEMORY.md")
 
     def test_partial_edit_only_updates_changed_lines(self, git, tmp_path):
         """Only modified lines should reflect the new commit's timestamp."""
@@ -308,3 +310,25 @@ class TestNestedRepoProtection:
 
         assert result is False
         assert not (workspace / ".git").exists()
+
+
+class TestCommitIdEncoding:
+    """Commit ids must be usable with git, not hex-of-hex."""
+
+    def test_auto_commit_returns_the_real_short_sha(self, git, tmp_path):
+        (tmp_path / "MEMORY.md").write_text("- a fact\n", encoding="utf-8")
+        sha = git.auto_commit("memory update")
+        expected = subprocess.run(
+            ["git", "-C", str(tmp_path), "log", "-1", "--format=%h", "--abbrev=8"],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+        assert sha == expected
+
+    def test_a_real_git_sha_resolves(self, git, tmp_path):
+        (tmp_path / "MEMORY.md").write_text("- a fact\n", encoding="utf-8")
+        git.auto_commit("memory update")
+        real = subprocess.run(
+            ["git", "-C", str(tmp_path), "log", "-1", "--format=%h", "--abbrev=8"],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+        assert git._resolve_sha(real) is not None
